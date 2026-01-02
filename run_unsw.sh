@@ -1,28 +1,28 @@
 #!/bin/sh
 
-# Fichier préparé par le script python
-input_fname="unsw_nb15_ready.csv"
-output_dir="_out/unsw_result"
+# Fichier de 20k lignes
+input_fname="unsw_20k.csv"
+output_dir="_out/unsw_20k_result"
 
-# Colonnes mappées (doivent correspondre aux valeurs de COL_MAPPING dans le python)
 time_idx="Timestamp"
 categorical_idxs="Protocol,Dst Port"
 continuous_idxs="Duration,Src Bytes,Dst Bytes"
 label_col="Label"
 
-# Paramètres de l'algo
-# freq="1s" est adapté si le trafic est dense. Sinon "1min"
+# --- PARAMÈTRES AJUSTÉS ---
 freq="1s"
 k=5
-width=3
-init_len=10
-FB=128
+width=3         # Fenêtre fine pour capter les attaques brèves
+init_len=300    # 5 min d'apprentissage (sur ~15 min totales)
+FB=32          # Précision standard
+N_ITER=10       # Bon compromis vitesse/qualité
 
-echo "Lancement de CyberCScope sur $input_fname..."
+echo "Nettoyage..."
+rm -rf "$output_dir"
 
-# On s'assure que le dossier de sortie existe (optionnel, le script python le fait souvent)
-mkdir -p "$output_dir"
+echo "Lancement sur 20k lignes..."
 
+# Commande sécurisée
 python3 main.py \
     --input_fpath "_dat/$input_fname" \
     --out_dir "$output_dir" \
@@ -35,4 +35,6 @@ python3 main.py \
     --width $width \
     --init_len $init_len \
     --FB $FB \
-    --verbose
+    --N_ITER $N_ITER \
+    --verbose \
+    --anomaly

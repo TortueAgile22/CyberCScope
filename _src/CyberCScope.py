@@ -269,8 +269,8 @@ class CyberCScope(object):
                 self.assignment = self.sample_topic(tensor.to_numpy())
                 # compute log likelihood
                 llh = self.log_likelihood()
-                if self.verbose or iter_ == 0 or iter_ == (n_iter - 1):
-                    print(f"llh_{iter_+1}: {llh}")
+                # if self.verbose or iter_ == 0 or iter_ == (n_iter - 1):
+                    # print(f"llh_{iter_+1}: {llh}")
                 self.each_samp_llh.append(llh)
 
                 if (self.early_stoppping) and (
@@ -380,8 +380,8 @@ class CyberCScope(object):
 
                 # compute log likelihood
                 llh = self.log_likelihood()
-                if self.verbose or iter_ == 0 or iter_ == (n_iter - 1):
-                    print(f"llh_{iter_+1}: {llh}")
+                # if self.verbose or iter_ == 0 or iter_ == (n_iter - 1):
+                    # print(f"llh_{iter_+1}: {llh}")
                 self.each_samp_llh.append(llh)
 
                 if (self.early_stoppping) and (
@@ -558,8 +558,8 @@ class CyberCScope(object):
             )
             # compute log likelihood
             llh = self.log_likelihood()
-            if self.verbose or iter_ == 0 or iter_ == (n_iter - 1):
-                print(f"llh_{iter_+1}: {llh}")
+            # if self.verbose or iter_ == 0 or iter_ == (n_iter - 1):
+                # print(f"llh_{iter_+1}: {llh}")
             self.each_samp_llh.append(llh)
 
             if (self.early_stoppping) and (

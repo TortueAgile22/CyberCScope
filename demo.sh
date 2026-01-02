@@ -12,6 +12,8 @@ FB=128
 init_len=6 # width x 2
 input_fname="partial_cci_18"
 
+rm -rf "./_out/"$input_fname
+
 # CyberCScope
 python3 main.py \
     --input_fpath "./_dat/"$input_fname".csv.gz" \
@@ -24,4 +26,5 @@ python3 main.py \
     --width $width \
     --k $k \
     --FB $FB \
-    --init_len $init_len
+    --init_len $init_len \
+    --anomaly

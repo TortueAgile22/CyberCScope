@@ -45,6 +45,7 @@ def prepare_event_tensor(
     data[time_idx] = timepoint_encoder.transform(data[time_idx].values)
 
     # Encode categorical features
+    data[categorical_idxs] = data[categorical_idxs].astype(str)
     oe = preprocessing.OrdinalEncoder()
     data[categorical_idxs] = oe.fit_transform(data[categorical_idxs])
     data[categorical_idxs] = data[categorical_idxs].astype(int)
@@ -182,6 +183,7 @@ if __name__ == "__main__":
     parser.add_argument("--k", type=int)
     parser.add_argument("--width", type=int)
     parser.add_argument("--verbose", action="store_true")
+    parser.add_argument("--anomaly", action="store_true", help="Enable anomaly detection scoring")
  
     # model details
     parser.add_argument("--FB", type=int, default = 40)
