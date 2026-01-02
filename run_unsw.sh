@@ -1,8 +1,12 @@
 #!/bin/sh
 
-# Fichier de 20k lignes
-input_fname="unsw_20k.csv"
-output_dir="_out/unsw_20k_result"
+# # Fichier de 20k lignes
+# input_fname="unsw_20k.csv"
+# output_dir="_out/unsw_20k_result"
+
+# Fichier de 100k lignes
+input_fname="unsw_100k.csv"
+output_dir="_out/unsw_100k_result"
 
 time_idx="Timestamp"
 categorical_idxs="Protocol,Dst Port"
@@ -20,7 +24,7 @@ N_ITER=10       # Bon compromis vitesse/qualité
 echo "Nettoyage..."
 rm -rf "$output_dir"
 
-echo "Lancement sur 20k lignes..."
+echo "Lancement sur 100k lignes..."
 
 # Commande sécurisée
 python3 main.py \
@@ -36,5 +40,4 @@ python3 main.py \
     --init_len $init_len \
     --FB $FB \
     --N_ITER $N_ITER \
-    --verbose \
     --anomaly
