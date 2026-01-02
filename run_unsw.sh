@@ -4,9 +4,13 @@
 # input_fname="unsw_20k.csv"
 # output_dir="_out/unsw_20k_result"
 
-# Fichier de 100k lignes
-input_fname="unsw_100k.csv"
-output_dir="_out/unsw_100k_result"
+# # Fichier de 100k lignes
+# input_fname="unsw_100k.csv"
+# output_dir="_out/unsw_100k_result"
+
+# UNSW complet (~600k lignes)
+input_fname="unsw_nb15_ready.csv"
+output_dir="_out/unsw_result"
 
 time_idx="Timestamp"
 categorical_idxs="Protocol,Dst Port"
@@ -18,7 +22,7 @@ freq="1s"
 k=5
 width=3         # Fenêtre fine pour capter les attaques brèves
 init_len=300    # 5 min d'apprentissage (sur ~15 min totales)
-FB=32          # Précision standard
+FB=40          # Précision standard
 N_ITER=10       # Bon compromis vitesse/qualité
 
 echo "Nettoyage..."

@@ -8,13 +8,19 @@ from _src.CyberCScope import CyberCScope
 
 sys.path.append("_src")
 
-# --- CONFIGURATION UTILISATEUR ---
-# Adapte ces chemins selon ton exécution
-RESULT_FILE = "_out/unsw_result/result.dill"   # Le fichier généré par ton run complet
-DATA_FILE = "_dat/unsw_nb15_ready.csv"         # Le CSV complet utilisé
-FREQ = "1s"                                    # Doit correspondre au paramètre --freq utilisé (ex: "1s")
-OUTPUT_METRICS_FILE = "_out/unsw_result/metrics_summary.txt"
-# --------------------------------
+# # --- CONFIGURATION UTILISATEUR ---
+# # Pour le dataset UNSW-NB15
+# RESULT_FILE = "_out/unsw_result/result.dill"   # Le fichier généré par ton run complet
+# DATA_FILE = "_dat/unsw_nb15_ready.csv"         # Le CSV complet utilisé
+# FREQ = "1s"                                    # Doit correspondre au paramètre --freq utilisé (ex: "1s")
+# OUTPUT_METRICS_FILE = "_out/unsw_result/metrics_summary.txt"
+
+# Pour le dataset CIC-IDS-2017
+RESULT_FILE = "_out/cic_result/result.dill"   # Le fichier généré par ton run complet
+DATA_FILE = "_dat/cic_wednesday_ready.csv"   # Le CSV complet utilisé
+FREQ = "1s"                                  # Doit correspondre au paramètre --freq utilisé (ex: "1s")
+OUTPUT_METRICS_FILE = "_out/cic_result/metrics_summary.txt"
+# -------------------------------
 
 def load_results():
     print(f"--- Chargement des résultats : {RESULT_FILE} ---")
