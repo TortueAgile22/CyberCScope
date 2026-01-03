@@ -1,35 +1,123 @@
-# CyberCScope
+# CyberCScope : Détection d'Anomalies sur Flux Réseaux (Benchmark)
 
-Implementation of [CyberCScope]().
+Ce dépôt contient le code source de **CyberCScope**, une méthode de détection d'anomalies basée sur la factorisation de tenseurs continus, ainsi que son benchmark comparatif avec deux algorithmes de l'état de l'art : **CubeScope** et **MemStream**.
 
-CyberCScope: Mining Skewed Tensor Streams and Online Anomaly Detection in Cybersecurity Systems.\
-Kota Nakamura, Koki Kawabata, Shungo Tanaka, Yasuko Matsubara, Yasushi Sakurai.  
-The Web Conference 2025 short research paper.
+## 📋 Prérequis
 
-<img src="./_assets/op-sifi.png" width=600>
+* Python 3.8+
+* Les librairies listées dans `requirements.txt`
 
- CyberCScope is freely available for non-commercial purposes. 
- If you intend to use CyberCScope for a commercial purpose, please contact us by email at [kotaNakm0317@gmail.com]
+Installation des dépendances :
+```bash
+pip install -r requirements.txt
+```
 
-## Quick demo
-    # Quick demo for partial data of CCI'18
-    $ sh demo.sh
+**Guide d'Utilisateur** : suivez ces étapes pour reproduire les expériences sur les datasets UNSW-NB15 et CIC-IDS-2017.
 
-## Input for CyberCScope
-Pandas.DataFrame  
-Time + Categorical attributes + (Skewed) Continuous attributes
+1. Téléchargement des Données
+Vous devez récupérer les datasets originaux et les placer dans le dossier `_dat/` :
 
-0| Time | Attribute1 | Attribute2 | Attribute3 | Attribute4 | ...  
-1|                                :  
-2|                                :  
-3|                                :  
+UNSW-NB15 : Téléchargez le fichier UNSW-NB15_1.csv.
 
-> [!NOTE]  
-> The method can flexibly handle both categorical and continuous attributes.  
-> It can handle skewness in the continuous attributes.
+Lien officiel : [UNSW-NB15 Dataset](https://research.unsw.edu.au/projects/unsw-nb15-dataset)
 
-<img src="./_assets/data_dist.png" width=500>
+CIC-IDS-2017 : Téléchargez le fichier correspondant au trafic du Mercredi (Wednesday) --> Wednesday-workingHours.pcap_ISCX.csv.
 
-## Datasets
-* [CI'17](https://drive.google.com/file/d/1yjNbQOhA_A4P88bLFCVHIL5eW5tJ1zNg/view?usp=drive_link)
-* [CCI'18](https://drive.google.com/file/d/113vZifexP2ggPjALXOWet3Q5IglMyUXQ/view?usp=drive_link)
+Lien officiel : [CIC-IDS-2017 Dataset](https://www.kaggle.com/datasets/chethuhn/network-intrusion-dataset?select=Wednesday-workingHours.pcap_ISCX.csv)
+
+2. Préparation des Données
+
+Avant de lancer les modèles, les données brutes doivent être nettoyées et formatées.
+
+```bash
+# Pour UNSW-NB15thon3 prepare_data_unsw.py
+python3 prepare_data_unsw.py
+
+# Pour CIC-IDS-2017
+python3 prepare_data_cic.py
+```
+Cela va créer des fichiers `*_ready.csv` dans le dossier `_dat/`.
+
+3. Exécution du modèle : CyberCScope (Ours)
+
+Lancez l'entraînement et la détection, puis l'évaluation.
+
+Pour UNSW-NB15 :
+
+```bash
+run_unsw.sh
+# Modifiez eval_metrics.py pour pointer vers le résultat UNSW avant de lancer
+python3 eval_metrics.py
+```
+
+Pour CIC-IDS-2017 :
+```bash
+sh run_cic.sh
+# Modifiez eval_metrics.py pour pointer vers le résultat CIC avant de lancer
+python3 eval_metrics.py
+```
+
+4. Exécution du benchmark : CubeScope
+
+Pour UNSW-NB15 :
+
+```Bash
+sh run_unsw_CubeScope.sh
+# Pointez eval_metrics.py vers _out/unsw_cubescope/result.dill
+python3 eval_metrics.py
+```
+
+Pour CIC-IDS-2017 :
+
+```Bash
+sh run_cic_CubeScope.sh
+# Pointez eval_metrics.py vers _out/cic_cubescope/result.dill
+python3 eval_metrics.py
+````
+
+5. Exécution du benchmark : MemStream
+
+Pour UNSW-NB15 :
+
+```Bash
+sh run_unsw_MemStream.sh
+# Utilisez le script d'évaluation unifié
+python3 eval_metrics_memstream_unified.py --dataset unsw
+```
+
+Pour CIC-IDS-2017 :
+
+```Bash
+sh run_cic_MemStream.sh
+python3 eval_metrics_memstream_unified.py --dataset cic
+```
+
+6. Récupération des Résultats
+
+Une fois les évaluations terminées, les scores résumés (ROC AUC et PR AUC) sont sauvegardés automatiquement dans les fichiers textes suivants :
+
+- `_out/unsw_result/metrics_summary.txt` (CyberCScope UNSW)
+
+- `_out/cic_result/metrics_summary.txt` (CyberCScope CIC)
+
+- `_out/unsw_cubescope/metrics_summary.txt` (CubeScope UNSW)
+
+- `_out/cic_cubescope/metrics_summary.txt` (CubeScope CIC)
+
+- `_out/unsw_memstream/metrics_summary.txt` (MemStream UNSW)
+
+- `_out/cic_memstream/metrics_summary.txt` (MemStream CIC)
+
+7. Visualisation Comparative
+
+Pour générer le graphique comparatif final (Bar Chart) regroupant tous les modèles :
+
+Ouvrez plot_result.py.
+
+Mettez à jour les valeurs raw avec celles trouvées dans les fichiers metrics_summary.txt de l'étape 6.
+
+Lancez le script :
+
+```Bash
+python3 plot_result.py
+```
