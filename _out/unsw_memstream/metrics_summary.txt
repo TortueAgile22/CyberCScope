@@ -1,0 +1,3 @@
+Dataset: UNSW
+ROC AUC: 0.6517
+PR AUC: 0.0635

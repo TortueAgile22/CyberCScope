@@ -1,14 +1,6 @@
 #!/bin/sh
 
-# # Fichier de 20k lignes
-# input_fname="unsw_20k.csv"
-# output_dir="_out/unsw_20k_result"
-
-# # Fichier de 100k lignes
-# input_fname="unsw_100k.csv"
-# output_dir="_out/unsw_100k_result"
-
-# UNSW complet (~600k lignes)
+# --- CONFIGURATION UNSW-NB15 ---
 input_fname="unsw_nb15_ready.csv"
 output_dir="_out/unsw_result"
 
@@ -17,20 +9,19 @@ categorical_idxs="Protocol,Dst Port"
 continuous_idxs="Duration,Src Bytes,Dst Bytes"
 label_col="Label"
 
-# --- PARAMÈTRES AJUSTÉS ---
+# Paramètres
 freq="1s"
 k=5
-width=3         # Fenêtre fine pour capter les attaques brèves
-init_len=300    # 5 min d'apprentissage (sur ~15 min totales)
-FB=40          # Précision standard
-N_ITER=10       # Bon compromis vitesse/qualité
+width=3         
+init_len=300    
+FB=40          
+N_ITER=10    
 
 echo "Nettoyage..."
 rm -rf "$output_dir"
 
-echo "Lancement sur 100k lignes..."
+echo "Lancement sur $input_fname..."
 
-# Commande sécurisée
 python3 main.py \
     --input_fpath "_dat/$input_fname" \
     --out_dir "$output_dir" \

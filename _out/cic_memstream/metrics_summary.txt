@@ -1,0 +1,3 @@
+Dataset: CIC
+ROC AUC: 0.6232
+PR AUC: 0.6847

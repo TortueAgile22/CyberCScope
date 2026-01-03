@@ -6,7 +6,6 @@ INPUT_FILE = "_dat/UNSW-NB15_1.csv"
 OUTPUT_FILE = "_dat/unsw_nb15_ready.csv"
 
 # Liste des 49 colonnes dans l'ordre exact du fichier NUSW-NB15_features.csv
-# Cela permet d'attribuer les bons noms puisque le CSV n'a pas d'en-tête.
 COL_NAMES = [
     "srcip", "sport", "dstip", "dsport", "proto", "state", "dur", "sbytes", "dbytes",
     "sttl", "dttl", "sloss", "dloss", "service", "Sload", "Dload", "Spkts", "Dpkts",
@@ -32,28 +31,16 @@ COL_MAPPING = {
 def clean_and_convert():
     print(f"Chargement de {INPUT_FILE}...")
     try:
-        # Lecture du CSV sans en-tête (header=None) et attribution des noms (names=COL_NAMES)
         df = pd.read_csv(INPUT_FILE, header=None, names=COL_NAMES, low_memory=False)
-        
-        # Nettoyage des noms de colonnes (sécurité)
         df.columns = df.columns.str.strip()
-
-        # Sélection et renommage des colonnes
         df_clean = df[list(COL_MAPPING.keys())].rename(columns=COL_MAPPING)
-
-        # Conversion du Timestamp (format Unix epoch dans UNSW-NB15)
         print("Conversion du Timestamp...")
         df_clean['Timestamp'] = pd.to_datetime(df_clean['Timestamp'], unit='s')
-        
-        # Gestion des ports : on force en chaîne de caractères
         df_clean['Dst Port'] = df_clean['Dst Port'].astype(str)
-
-        # Suppression des lignes avec valeurs manquantes
         print(f"Taille avant nettoyage : {len(df_clean)}")
         df_clean.dropna(inplace=True)
         print(f"Taille après nettoyage : {len(df_clean)}")
 
-        # Sauvegarde du fichier prêt
         print(f"Sauvegarde dans {OUTPUT_FILE}...")
         df_clean.to_csv(OUTPUT_FILE, index=False)
         print("Terminé ! Le fichier est prêt pour l'analyse.")
